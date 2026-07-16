@@ -155,29 +155,7 @@ SELECT COUNT(*) FROM Dim_Date;
 SELECT COUNT(*) FROM Fact_Sales;
 
 
--- 1 Platform Lifespan
-SELECT p.Platform, 
-       MIN(d.Year) as Launch_Year, 
-       MAX(d.Year) as Discontinue_Year,
-       (MAX(d.Year) - MIN(d.Year) + 1) as Lifespan_Years
-FROM Fact_Sales f
-JOIN Dim_Platforms p ON f.Platform_ID = p.Platform_ID
-JOIN Dim_Date d ON f.Year_ID = d.Year_ID
-GROUP BY p.Platform
-ORDER BY Lifespan_Years DESC;
 
-
--- 2 Regional Sales Contribution Query 
-SELECT g.Name, 
-       SUM(f.Global_Sales) as Total_Global_Sales_Millions,
-       SUM(f.NA_Sales) as NA_Sales_Millions,
-       SUM(f.EU_Sales) as EU_Sales_Millions,
-       SUM(f.JP_Sales) as JP_Sales_Millions
-FROM Fact_Sales f
-JOIN Dim_Games g ON f.Game_ID = g.Game_ID
-GROUP BY g.Name
-HAVING SUM(f.Global_Sales) > 0
-ORDER BY Total_Global_Sales_Millions DESC;
 
 
 
